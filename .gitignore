@@ -1,0 +1,6 @@
+/build
+node_modules
+.env
+/build
+nodemon.json
+/uploads
