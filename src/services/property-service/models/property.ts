@@ -6,7 +6,10 @@ interface IProperty extends Document{
     address: string,
     description: string,
     type: string,
-    position: string,
+    position: {
+        lat: number,
+        lng: number
+    },
     price: number,
     features: Array<string>,
     profileImage: string,

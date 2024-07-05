@@ -9,7 +9,10 @@ interface IUser extends Document {
 }
 
 const userSchema = new Schema ({
-    user_id: {},
+    user_id: {
+        type: String,
+        required: true,
+    },
     fullName: {
         type: String,
         minlength: 4,
@@ -25,9 +28,10 @@ const userSchema = new Schema ({
         type: String,
     },
     property: { 
-        type: Array
+        type: [String]
     }
 })
+
 
 const User = model<IUser>('User', userSchema)
 
