@@ -12,9 +12,9 @@ app.use(cors());
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI!, { useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions)
-  .then(() => console.log('User Service MongoDB connected'))
+  .then(() => console.log('Property Service MongoDB connected'))
   .catch(err => console.log(err));
 
 app.listen(port, () => {
-  console.log(`User Service running on port ${port}`);
+  console.log(`Property Service running on port ${port}`);
 });
