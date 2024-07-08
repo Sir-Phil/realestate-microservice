@@ -13,14 +13,14 @@ interface IProperty extends Document{
     price: number,
     features: Array<string>,
     profileImage: string,
-    images: string,
+    images: Array<string>,
     currency: string,
     contactNumber: string,
     contactEmail: string,
     user_id : mongoose.Types.ObjectId | string,
 }
 
-const propertySchema = new Schema ({
+const propertySchema = new Schema <IProperty> ({
     property_id : {
         type: String,
         required: true
@@ -40,13 +40,13 @@ const propertySchema = new Schema ({
     },
     position: {lat: Number, lng: Number},
     features: {
-        type: Array,
+        type: [String],
     },
     profileImage: {
         type: String
     },
     images: {
-        type: Array
+        type: [String]
     },
     currency: {
         type: String

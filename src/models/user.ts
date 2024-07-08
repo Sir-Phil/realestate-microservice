@@ -8,7 +8,7 @@ interface IUser extends Document {
     property: Array<string>
 }
 
-const userSchema = new Schema ({
+const userSchema = new Schema<IUser> ({
     user_id: {
         type: String,
         required: true,
