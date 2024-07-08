@@ -1,45 +1,46 @@
 import asyncHandler from "express-async-handler"
 import { Request, Response, NextFunction } from "express";
-import { isPasswordValid } from "../../util/users";
-import bcrypt from 'bcrypt';
-import {v4 as uuidv4} from 'uuid';
+import bcrypt from 'bcrypt'
+import  Jwt  from "jsonwebtoken";
 import User from "../../models/user";
 
-
-/**
- * Registers a new user.
- * @async
- * @param {Request} req - The Express request object.
- * @param {Response} res - The Express response object.
- * @returns {Promise<Response>} A promise that resolves to the Express response object.
- */
-
 const signIn = asyncHandler(async (req: Request, res: Response, _next: NextFunction) => {
-    const {fullName, email, password} = req.body;
+    const {email, password} = req.body;
 
-    if(fullName && email && password){
-        if(!isPasswordValid(password)){
-             res.status(400).send({
-                message: 'Error: password is not valid'
+    try {
+        const foundUser = await User.findOne({email: email.toLowerCase() });
+        if(!foundUser){
+            res.status(400).send({
+                message: 'Error: Invalid Email or Password',
             });
         }
 
-        try {
-            const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT) || 12);
-            const newUser = new User({
-                user_id: uuidv4(),
-                fullName,
-                email: email.toLowerCase(),
-                password: hashedPassword,
-            })
-        } catch (error) {
-            res.status(500).send({
-                message: 'Error: Could not register use',
-                error
-            })
+        const validPassword = await bcrypt.compare(
+            password, 
+            foundUser!.password
+        );
+        if(!validPassword){
+            res.status(400).send({
+                message: 'Error: Invalid Email or Password'
+            });
         }
+
+        const user_id = foundUser;
+        const accessToken = Jwt.sign({id: user_id}, process.env.SECRET_KEY as string || 'secret' );
+        res.status(200).send({
+            Data: {
+                id: foundUser?.id,
+                user_id: foundUser?.user_id,
+                fullName: foundUser?.fullName,
+                email: foundUser?.email,
+                accessToken,
+            },
+        });
+    } catch (error) {
+        res.status(404).send({
+            message: 'Error: Something went wrong.'
+        });
     }
-    res.status(400).send({message: 'Error: form is invalid'})
 })
 
 export default signIn;
