@@ -14,7 +14,7 @@ import User from "../../models/user";
  * @returns {Promise<Response>} A promise that resolves to the Express response object.
  */
 
-const register = asyncHandler(async (req: Request, res: Response, _next: NextFunction) => {
+const register = asyncHandler(async (req: Request, res: Response, _next: NextFunction): Promise<void> => {
     const {fullName, email, password} = req.body;
 
     if(fullName && email && password){
@@ -22,6 +22,7 @@ const register = asyncHandler(async (req: Request, res: Response, _next: NextFun
              res.status(400).send({
                 message: 'Error: password is not valid'
             });
+            return
         }
 
         try {
@@ -37,6 +38,7 @@ const register = asyncHandler(async (req: Request, res: Response, _next: NextFun
                 message: 'Error: Could not register use',
                 error
             })
+            return
         }
     }
     res.status(400).send({message: 'Error: form is invalid'})
