@@ -12,6 +12,7 @@ import { setSwagger } from './setSwagger';
 import { setStatic } from './static';
 import { setCors } from './cors';
 import { authBearerToken } from './util/requests';
+import { setExpressRoute } from './routes';
 
 
 
@@ -61,6 +62,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
+// register the route 
+setExpressRoute
 //Generate API documentation 
 setSwagger(app)
 
