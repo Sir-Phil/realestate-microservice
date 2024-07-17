@@ -1,25 +1,26 @@
-import { Express } from 'express';
-import swaggerJsdoc from 'swagger-jsdoc';
+import { Application, Request, Response } from 'express';
 import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
 
 const options = {
   definition: {
     openapi: '3.0.0',
     info: {
       title: 'API Documentation',
-      description: 'Express Swagger API documentation.',
       version: '0.1.0',
-    },
-    externalDocs: {
-      url: 'https://swagger.io',
-      description: 'Find more info here',
+      description: 'Express Swagger API documentation.',
     },
   },
-  apis: ['./routes/*.ts'], // Path to the API docs
+  apis: ['./routes/*.ts', './controllers/*.ts'], // Adjust the path according to your project structure
 };
 
-const specs = swaggerJsdoc(options);
+const swaggerSpec = swaggerJsdoc(options);
 
-export const setSwagger = (app: Express): void => {
-  app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
+export const setSwaggerDocs = (app: Application) => {
+  app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.get('/doc.json', (req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+  });
 };
+

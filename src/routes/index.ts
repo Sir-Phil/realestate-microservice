@@ -10,5 +10,5 @@ export const setExpressRoute = (app: Application) => {
         res.send(true);
     });
 
-    app.use("/users", userRouter);
+    app.use("/auth", userRouter);
 }

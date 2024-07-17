@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
-import  Jwt  from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import multer from 'multer'
@@ -8,11 +7,10 @@ import multer from 'multer'
 
 //Local Files
 import { createServer } from 'http';
-import { setSwagger } from './setSwagger';
 import { setStatic } from './static';
 import { setCors } from './cors';
-import { authBearerToken } from './util/requests';
 import { setExpressRoute } from './routes';
+import { setSwaggerDocs } from './setSwagger';
 
 
 
@@ -41,18 +39,25 @@ app.use(express.urlencoded({extended: true}));
 //     });
 // });
 
+// Middleware to log requests
 app.use((req: Request, res: Response, next: NextFunction) => {
-    try {
-      const token = authBearerToken(req);
-      Jwt.verify(token, process.env.SECRET_KEY || 'secret', (err, user) => {
-        if (err) return res.sendStatus(403);
-        req.user = user;
-        next();
-      });
-    } catch (err) {
-      res.sendStatus(401);
-    }
-  });
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
+
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//     try {
+//       const token = authBearerToken(req);
+//       Jwt.verify(token, process.env.SECRET_KEY || 'secret', (err, user) => {
+//         if (err) return res.sendStatus(403);
+//         req.user = user;
+//         next();
+//       });
+//     } catch (err) {
+//       res.sendStatus(401);
+//     }
+//   });
 
 //Middle for hashing passwords
 const saltWorkFactor = Number(process.env.SALT) || 12;
@@ -63,9 +68,16 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // register the route 
-setExpressRoute
+setExpressRoute(app);
+
+// Global error handling middleware
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
 //Generate API documentation 
-setSwagger(app)
+setSwaggerDocs(app);
 
 // Server static files -ex uploads/
 setStatic(app);
@@ -80,7 +92,7 @@ const server = createServer(app);
 //Connect to mongoDB
 mongoose.connect(process.env.DB_CONNECT || '')
 .then(() => {
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.PORT || 5000;
     server.listen(PORT, () => {
         console.log('Listening on PORT: ' + PORT)
     });
