@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import multer from 'multer'
+import { WebSocketServer } from 'ws';
 
 
 //Local Files
@@ -11,6 +12,7 @@ import { setStatic } from './static';
 import { setCors } from './cors';
 import { setExpressRoute } from './routes';
 import { setSwaggerDocs } from './setSwagger';
+import { setWebSocket } from './websocket';
 
 
 
@@ -88,6 +90,10 @@ setCors(app);
 //Set up websocket server 
 const server = createServer(app);
 
+const wss = new WebSocketServer({ server })
+
+
+setWebSocket(wss);
 
 //Connect to mongoDB
 mongoose.connect(process.env.DB_CONNECT || '')
