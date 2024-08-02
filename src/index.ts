@@ -12,7 +12,7 @@ import { setStatic } from './static';
 import { setCors } from './cors';
 import { setExpressRoute } from './routes';
 import { setSwaggerDocs } from './setSwagger';
-import { setWebSocket } from './websocket';
+import { setupWebSocket } from './websocket';
 
 
 
@@ -93,7 +93,7 @@ const server = createServer(app);
 const wss = new WebSocketServer({ server })
 
 
-setWebSocket(wss);
+setupWebSocket(wss);
 
 //Connect to mongoDB
 mongoose.connect(process.env.DB_CONNECT || '')
