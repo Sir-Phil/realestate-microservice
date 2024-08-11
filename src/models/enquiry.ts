@@ -71,9 +71,9 @@ const enquirySchema = new Schema<IEnquiry>({
   title: { type: String, required: true },
   topic: { type: String, required: true },
   read: { type: Boolean, default: false },
-  property: { type: propertySchema, required: true },
-  replyTo: { type: replyToSchema, required: true },
-  users: { type: usersSchema, required: true }
+  property: { type: propertySchema },
+  replyTo: { type: replyToSchema },
+  users: { type: usersSchema }
 }, {
   timestamps: true
 });
