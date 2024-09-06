@@ -5,7 +5,7 @@ import { responseError, responseSuccess } from '../../../util/constants/response
 import enquiryProperties from './schema';
 
 const updateEnquiryOpts = (
-    handler: (req: Request, res: Response, next: NextFunction) => Promise<void>
+    handler: (req: Request, res: Response, next: NextFunction) => void
   ) => [
     (req: Request, res: Response, next: NextFunction) => {
       try {

@@ -5,7 +5,7 @@ interface IUser extends Document {
     fullName: string,
     email: string,
     password: string,
-    property: Array<string>
+    properties: Array<string>
 }
 
 const userSchema = new Schema<IUser> ({
@@ -27,7 +27,7 @@ const userSchema = new Schema<IUser> ({
     password: {
         type: String,
     },
-    property: { 
+    properties: { 
         type: [String]
     }
 })

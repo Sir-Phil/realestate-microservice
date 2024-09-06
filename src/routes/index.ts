@@ -1,5 +1,6 @@
 import express, { Application, Request,Response } from "express";
 import userRouter from "./auth/indext";
+import enquiryRouter from "./enquiry";
 
 
 
@@ -11,4 +12,5 @@ export const setExpressRoute = (app: Application) => {
     });
 
     app.use("/auth", userRouter);
+    app.use("/enquiries", enquiryRouter)
 }

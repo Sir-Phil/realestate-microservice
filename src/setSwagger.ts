@@ -10,17 +10,24 @@ const options = {
       version: '0.1.0',
       description: 'Express Swagger API documentation.',
     },
+    // servers: [
+    //   {
+    //     url: 'http://localhost:5000', // Replace with your server URL
+    //   },
+    // ],
   },
-  apis: ['./routes/*.ts', './controllers/*.ts'], // Adjust the path according to your project structure
+  apis: ['./src/routes/**/*.ts', './src/controllers/**/*.ts'], // Adjust the path according to your project structure
 };
 
 const swaggerSpec = swaggerJsdoc(options);
 
 export const setSwaggerDocs = (app: Application) => {
-  app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  app.get('/doc.json', (req: Request, res: Response) => {
+  // Serve Swagger UI at the /docs endpoint
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  
+  // Serve the Swagger specification in JSON format at the /docs.json endpoint
+  app.get('/docs.json', (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(swaggerSpec);
   });
 };
-
