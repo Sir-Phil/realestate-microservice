@@ -10,7 +10,7 @@ import { WebSocketServer } from 'ws';
 import { createServer } from 'http';
 import { setStatic } from './static';
 import { setCors } from './cors';
-import { setExpressRoute } from './routes';
+import  setExpressRoute  from './routes';
 import { setSwaggerDocs } from './setSwagger';
 import { setupWebSocket } from './websocket';
 

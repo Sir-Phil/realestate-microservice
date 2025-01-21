@@ -13,7 +13,7 @@ interface IProperty extends Document{
     price: number,
     features: Array<string>,
     profileImage: string,
-    images: Array<string>,
+    images: string [],
     currency: string,
     contactNumber: string,
     contactEmail: string,
